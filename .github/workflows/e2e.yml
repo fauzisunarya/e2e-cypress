@@ -23,7 +23,7 @@ jobs:
 
       - name: Create cypress.env.json
         run: |
-          echo "${{ secrets.CYPRESS_ENV_JSON }}" > cypress.env.json
+          printf "%s" "${{ secrets.CYPRESS_ENV_JSON }}" > cypress.env.json
           if ! jq empty cypress.env.json; then
             echo "cypress.env.json is not valid JSON"
             exit 1
@@ -31,8 +31,10 @@ jobs:
         env:
           CYPRESS_ENV_JSON: ${{ secrets.CYPRESS_ENV_JSON }}
 
-      - name: Debug cypress.env.json
-        run: cat cypress.env.json || echo "Fail to create cypress.env.json"
+      - name: Check cypress.env.json details
+        run: |
+          ls -l cypress.env.json
+          cat cypress.env.json || echo "cypress.env.json could not be read"
 
       - name: Install dependencies
         run: npm install
