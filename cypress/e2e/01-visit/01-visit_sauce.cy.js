@@ -1,5 +1,5 @@
 describe('Visit site sauce', () => {
-  it('passes', () => {
+  it('pass', () => {
     cy.visit(Cypress.env('baseUrlSauce'))
   })
 })
