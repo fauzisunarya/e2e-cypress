@@ -21,15 +21,20 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Create cypress.env.json
+        run: echo "$CYPRESS_ENV_JSON" > cypress.env.json
+        env:
+          CYPRESS_ENV_JSON: ${{ secrets.CYPRESS_ENV_JSON }}
+
       - name: Install dependencies
         run: npm install
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v5
         with:
-          record: false  # Set to 'true' if you want to record results in the Cypress Dashboard
-          headless: true  # Runs tests in headless mode
-          browser: chrome  # Specify browser; can be changed to 'firefox' or left blank to use default
+          record: false
+          headless: true
+          browser: chrome
 
       - name: Archive Cypress screenshots and videos
         if: failure()
