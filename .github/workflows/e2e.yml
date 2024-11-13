@@ -22,9 +22,17 @@ jobs:
           node-version: '18'
 
       - name: Create cypress.env.json
-        run: echo "$CYPRESS_ENV_JSON" > cypress.env.json
+        run: |
+          echo "${{ secrets.CYPRESS_ENV_JSON }}" > cypress.env.json
+          if ! jq empty cypress.env.json; then
+            echo "cypress.env.json is not valid JSON"
+            exit 1
+          fi
         env:
           CYPRESS_ENV_JSON: ${{ secrets.CYPRESS_ENV_JSON }}
+
+      - name: Debug cypress.env.json
+        run: cat cypress.env.json || echo "Failed to create cypress.env.json"
 
       - name: Install dependencies
         run: npm install
